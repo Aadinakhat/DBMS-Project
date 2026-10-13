@@ -52,9 +52,9 @@ exports.listSchedules = async (req, res, next) => {
             params.push(parseInt(day_of_week, 10));
         }
         if (search) {
-            sql += ' AND (c.course_code LIKE ? OR c.course_name LIKE ? OR l.lab_name LIKE ? OR f.name LIKE ?)';
+            sql += ' AND (c.course_code LIKE ? OR c.course_name LIKE ? OR l.lab_name LIKE ? OR f.name LIKE ? OR b.batch_name LIKE ?)';
             const searchParam = `%${search}%`;
-            params.push(searchParam, searchParam, searchParam, searchParam);
+            params.push(searchParam, searchParam, searchParam, searchParam, searchParam);
         }
 
         sql += ' ORDER BY t.day_of_week, t.start_time';
