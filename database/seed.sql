@@ -283,7 +283,28 @@ INSERT INTO app_user (user_id, name, email, password_hash, role, dept_id) VALUES
 (224, 'Manoj Bajpayee', 'manoj.bajpayee@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
 (225, 'Neha Dhupia', 'neha.dhupia@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
 (226, 'Pankaj Tripathi', 'pankaj.tripathi@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
-(227, 'Radhika Apte', 'radhika.apte@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2);
+(227, 'Radhika Apte', 'radhika.apte@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+
+-- Second Year Computer Engineering Division C Faculty
+(228, 'Prof. Surekha Dholay', 'srd@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'FACULTY', 2),
+
+-- SE Computer Engineering Division C Students (Batches SE-CE-C1 to C4)
+(229, 'Aamir Qureshi', 'aamir.qureshi@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(230, 'Binita Paul', 'binita.paul@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(231, 'Chetan Bhagat', 'chetan.bhagat@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(232, 'Divya Khosla', 'divya.khosla@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(233, 'Eshaan Khatri', 'eshaan.khatri@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(234, 'Falguni Pathak', 'falguni.pathak@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(235, 'Govind Namdeo', 'govind.namdeo@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(236, 'Harshita Gaur', 'harshita.gaur@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(237, 'Isha Koppikar', 'isha.koppikar@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(238, 'Javed Jaffrey', 'javed.jaffrey@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(239, 'Kay Kay Menon', 'kaykay.menon@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(240, 'Lisa Haydon', 'lisa.haydon@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(241, 'Mithun Chakraborty', 'mithun.chakraborty@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(242, 'Nimrat Kaur', 'nimrat.kaur@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(243, 'Om Vaidya', 'om.vaidya@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2),
+(244, 'Pooja Hegde', 'pooja.hegde@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 2);
 
 -- ---------------------------------------------------------------------
 -- 3. BATCHES (Divisions A, B, C, D - 4 sub-batches each)
@@ -330,7 +351,12 @@ INSERT INTO batch (batch_id, batch_name, dept_id) VALUES
 (37, 'SE-CE-B1', 2),
 (38, 'SE-CE-B2', 2),
 (39, 'SE-CE-B3', 2),
-(40, 'SE-CE-B4', 2);
+(40, 'SE-CE-B4', 2),
+-- Second Year Computer Engineering Division C Batches
+(41, 'SE-CE-C1', 2),
+(42, 'SE-CE-C2', 2),
+(43, 'SE-CE-C3', 2),
+(44, 'SE-CE-C4', 2);
 
 -- ---------------------------------------------------------------------
 -- 4. STUDENT_BATCH
@@ -424,7 +450,16 @@ INSERT INTO student_batch (student_id, batch_id) VALUES
 -- Batch SE-CE-B3
 (220, 39), (221, 39), (222, 39), (223, 39),
 -- Batch SE-CE-B4
-(224, 40), (225, 40), (226, 40), (227, 40);
+(224, 40), (225, 40), (226, 40), (227, 40),
+
+-- Batch SE-CE-C1
+(229, 41), (230, 41), (231, 41), (232, 41),
+-- Batch SE-CE-C2
+(233, 42), (234, 42), (235, 42), (236, 42),
+-- Batch SE-CE-C3
+(237, 43), (238, 43), (239, 43), (240, 43),
+-- Batch SE-CE-C4
+(241, 44), (242, 44), (243, 44), (244, 44);
 
 -- ---------------------------------------------------------------------
 -- 5. COURSES
@@ -506,7 +541,9 @@ INSERT INTO lab (lab_id, lab_name, capacity, gpu_capacity) VALUES
 (41, 'Lab-702 (Bay A)', 25, 0),
 (42, 'Room-609 (Classroom)', 40, 0),
 (43, 'Room-309 (Classroom)', 40, 0),
-(44, 'Lab-505', 30, 0);
+(44, 'Lab-505', 30, 0),
+(45, 'Lab-509-B', 25, 0),
+(46, 'Lab-402-A', 25, 0);
 
 -- ---------------------------------------------------------------------
 -- 7. OPERATING SYSTEMS
@@ -547,7 +584,9 @@ INSERT INTO lab_os (lab_id, os_id) VALUES
 (39, 1), (39, 2),
 (40, 1), (40, 2),
 (41, 1), (41, 2),
-(44, 1), (44, 2);
+(44, 1), (44, 2),
+(45, 1), (45, 2),
+(46, 1), (46, 2);
 
 -- ---------------------------------------------------------------------
 -- 9. SOFTWARE CATALOG
@@ -596,7 +635,9 @@ INSERT INTO lab_software (lab_id, software_id) VALUES
 (39, 1), (39, 2),
 (40, 7), (40, 11),
 (41, 7), (41, 11),
-(44, 1), (44, 2);
+(44, 1), (44, 2),
+(45, 7), (45, 11),
+(46, 7), (46, 11);
 
 -- ---------------------------------------------------------------------
 -- 11. COURSE_SOFTWARE
@@ -740,7 +781,11 @@ INSERT INTO workstation (workstation_id, lab_id, station_number, status) VALUES
 -- Lab-702 Bay A (171-176)
 (171, 41, 1, 'ACTIVE'), (172, 41, 2, 'ACTIVE'), (173, 41, 3, 'ACTIVE'), (174, 41, 4, 'ACTIVE'), (175, 41, 5, 'ACTIVE'), (176, 41, 6, 'ACTIVE'),
 -- Lab-505 (177-182)
-(177, 44, 1, 'ACTIVE'), (178, 44, 2, 'ACTIVE'), (179, 44, 3, 'ACTIVE'), (180, 44, 4, 'ACTIVE'), (181, 44, 5, 'ACTIVE'), (182, 44, 6, 'ACTIVE');
+(177, 44, 1, 'ACTIVE'), (178, 44, 2, 'ACTIVE'), (179, 44, 3, 'ACTIVE'), (180, 44, 4, 'ACTIVE'), (181, 44, 5, 'ACTIVE'), (182, 44, 6, 'ACTIVE'),
+-- Lab-509-B (183-188)
+(183, 45, 1, 'ACTIVE'), (184, 45, 2, 'ACTIVE'), (185, 45, 3, 'ACTIVE'), (186, 45, 4, 'ACTIVE'), (187, 45, 5, 'ACTIVE'), (188, 45, 6, 'ACTIVE'),
+-- Lab-402-A (189-194)
+(189, 46, 1, 'ACTIVE'), (190, 46, 2, 'ACTIVE'), (191, 46, 3, 'ACTIVE'), (192, 46, 4, 'ACTIVE'), (193, 46, 5, 'ACTIVE'), (194, 46, 6, 'ACTIVE');
 
 -- ---------------------------------------------------------------------
 -- 13. TIME SLOTS (1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday, 5=Friday)
@@ -1186,7 +1231,42 @@ INSERT INTO schedule (schedule_id, course_id, faculty_id, lab_id, slot_id, batch
 (229, 16, 14, 33, 46, 39, 'PRACTICAL'),
 (230, 13, 209, 29, 46, 40, 'PRACTICAL'),
 -- Fri 14:15-15:15: LA Tutorial (SP, Rm 609)
-(231, 18, 10, 42, 47, 37, 'PRACTICAL');
+(231, 18, 10, 42, 47, 37, 'PRACTICAL'),
+
+-- =================== SE COMPUTER ENGINEERING DIVISION C ===================
+-- Mon 11:15-13:15: C4 DS (CV, 604), C1 DBMS (KKD, 606-4), C2 DBMS (RHS, 603-3), C3 DBMS (PJB, 606-5)
+(232, 13, 184, 35, 6, 44, 'PRACTICAL'),
+(233, 14, 176, 29, 6, 41, 'PRACTICAL'),
+(234, 14, 188, 34, 6, 42, 'PRACTICAL'),
+(235, 14, 207, 30, 6, 43, 'PRACTICAL'),
+-- Mon 14:15-16:15: C1 DS (FM, 603-3), C2 DS (AM, 603-7), C3 DS (CV, 604), C4 Data Sci (SRD, 702-A)
+(236, 13, 187, 34, 9, 41, 'PRACTICAL'),
+(237, 13, 22, 36, 9, 42, 'PRACTICAL'),
+(238, 13, 184, 35, 9, 43, 'PRACTICAL'),
+(239, 16, 228, 41, 9, 44, 'PRACTICAL'),
+-- Tue 11:15-13:15: C4 DS (CV, 604), C1 COA (JS, 505), C2 COA (RS, 509 old), C3 COA (KB, 702-C)
+(240, 13, 184, 35, 16, 44, 'PRACTICAL'),
+(241, 15, 179, 44, 16, 41, 'PRACTICAL'),
+(242, 15, 19, 37, 16, 42, 'PRACTICAL'),
+(243, 15, 183, 33, 16, 43, 'PRACTICAL'),
+-- Tue 14:15-16:15: C1 DS (FM, 509 old), C2 DS (AM, 603-7), C3 DS (CV, 604), C4 Data Sci (SRD, 702-A)
+(244, 13, 187, 37, 19, 41, 'PRACTICAL'),
+(245, 13, 22, 36, 19, 42, 'PRACTICAL'),
+(246, 13, 184, 35, 19, 43, 'PRACTICAL'),
+(247, 16, 228, 41, 19, 44, 'PRACTICAL'),
+-- Wed 09:00-10:00: C1 LA (AT, Rm 601)
+(248, 18, 6, 18, 21, 41, 'PRACTICAL'),
+-- Thu 16:15-18:15: C1 Data Sci (CV, 603-2), C3 Data Sci (ARN, 603-3)
+(249, 16, 184, 38, 58, 41, 'PRACTICAL'),
+(250, 16, 122, 34, 58, 43, 'PRACTICAL'),
+-- Fri 09:00-11:00: C1 Data Sci (CV, 603-3), C2 Data Sci (AAG, 607-B), C4 COA (RS, 509 old)
+(251, 16, 184, 34, 43, 41, 'PRACTICAL'),
+(252, 16, 178, 31, 43, 42, 'PRACTICAL'),
+(253, 15, 19, 37, 43, 44, 'PRACTICAL'),
+-- Fri 11:15-13:15: C2 Data Sci (AAG, 509-B), C4 DBMS (KKD, 505), C3 Data Sci (ARN, 402-A)
+(254, 16, 178, 45, 46, 42, 'PRACTICAL'),
+(255, 14, 176, 44, 46, 44, 'PRACTICAL'),
+(256, 16, 122, 46, 46, 43, 'PRACTICAL');
 
 -- ---------------------------------------------------------------------
 -- 15. WORKSTATION ALLOCATION (Student seat assignments for practicals)
@@ -1256,7 +1336,12 @@ INSERT INTO workstation_allocation (schedule_id, student_id, workstation_id) VAL
 (207, 212, 99),
 (207, 213, 100),
 (207, 214, 101),
-(207, 215, 102);
+(207, 215, 102),
+-- Schedule 233: DBMS in Lab-606 Bay 4 (Workstations 99, 100, 101, 102) for Batch SE-CE-C1 (Students 229, 230, 231, 232)
+(233, 229, 99),
+(233, 230, 100),
+(233, 231, 101),
+(233, 232, 102);
 
 -- ---------------------------------------------------------------------
 -- 16. AD_HOC_REQUEST (Viva sample booking)
@@ -1283,4 +1368,4 @@ INSERT INTO notification (notification_id, user_id, message, is_read) VALUES
 -- 19. AUDIT_LOG
 -- ---------------------------------------------------------------------
 INSERT INTO audit_log (action_type, entity_name, entity_id, performed_by, details) VALUES
-('DATABASE_SEED', 'system', 1, 'SYSTEM', 'SPIT First Year (A-H) and Second Year Computer Engineering (Divisions A, B) timetable database initialized.');
+('DATABASE_SEED', 'system', 1, 'SYSTEM', 'SPIT First Year (A-H) and Second Year Computer Engineering (Divisions A, B, C) timetable database initialized.');
