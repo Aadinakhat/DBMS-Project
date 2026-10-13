@@ -380,7 +380,32 @@ INSERT INTO app_user (user_id, name, email, password_hash, role, dept_id) VALUES
 (308, 'Eijaz Khan', 'eijaz.khan@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 4),
 (309, 'Fenil Umrigar', 'fenil.u@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 4),
 (310, 'Gautami Kapoor', 'gautami.k@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 4),
-(311, 'Hiten Tejwani', 'hiten.tejwani@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 4);
+(311, 'Hiten Tejwani', 'hiten.tejwani@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 4),
+
+-- Second Year Electronics and Telecommunication Engineering Faculty
+(312, 'Prof. Govind Haldankar', 'govind.haldankar@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'FACULTY', 3),
+(313, 'Dr. Amol Deshpande', 'amol.deshpande@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'FACULTY', 3),
+(314, 'Dr. P. Kasambe', 'pvk@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'FACULTY', 3),
+(315, 'Prof. Najib Ghatte', 'ng@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'FACULTY', 3),
+(316, 'Dr. Payal Shah', 'phs@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'FACULTY', 3),
+
+-- SE Electronics and Telecommunication Division A Students (Batches SE-EXTC-A1 to A4)
+(317, 'Aftab Shivdasani', 'aftab.s@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(318, 'Bipasha Basu', 'bipasha.basu@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(319, 'Chunky Pandey', 'chunky.p@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(320, 'Daisy Shah', 'daisy.shah@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(321, 'Dino Morea', 'dino.morea@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(322, 'Evelyn Sharma', 'evelyn.s@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(323, 'Freddy Daruwala', 'freddy.d@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(324, 'Geeta Basra', 'geeta.basra@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(325, 'Harman Baweja', 'harman.b@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(326, 'Isha Sharvani', 'isha.sharvani@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(327, 'Jugal Hansraj', 'jugal.h@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(328, 'Kim Sharma', 'kim.sharma@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(329, 'Kunal Khemu', 'kunal.khemu@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(330, 'Minissha Lamba', 'minissha.l@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(331, 'Neil Nitin Mukesh', 'neil.nm@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3),
+(332, 'Payal Rohatgi', 'payal.r@spit.ac.in', '$2b$10$K7Xk9d8a3Lq0mE3d0fR0YeQfP8Z3L3v9aB3n9bC8v7x6z5y4w3u2', 'STUDENT', 3);
 
 -- ---------------------------------------------------------------------
 -- 3. BATCHES (Divisions A, B, C, D - 4 sub-batches each)
@@ -447,7 +472,12 @@ INSERT INTO batch (batch_id, batch_name, dept_id) VALUES
 (53, 'SE-CSE-B1', 4),
 (54, 'SE-CSE-B2', 4),
 (55, 'SE-CSE-B3', 4),
-(56, 'SE-CSE-B4', 4);
+(56, 'SE-CSE-B4', 4),
+-- Second Year Electronics and Telecommunication Division A Batches
+(57, 'SE-EXTC-A1', 3),
+(58, 'SE-EXTC-A2', 3),
+(59, 'SE-EXTC-A3', 3),
+(60, 'SE-EXTC-A4', 3);
 
 -- ---------------------------------------------------------------------
 -- 4. STUDENT_BATCH
@@ -577,7 +607,16 @@ INSERT INTO student_batch (student_id, batch_id) VALUES
 -- Batch SE-CSE-B3
 (304, 55), (305, 55), (306, 55), (307, 55),
 -- Batch SE-CSE-B4
-(308, 56), (309, 56), (310, 56), (311, 56);
+(308, 56), (309, 56), (310, 56), (311, 56),
+
+-- Batch SE-EXTC-A1
+(317, 57), (318, 57), (319, 57), (320, 57),
+-- Batch SE-EXTC-A2
+(321, 58), (322, 58), (323, 58), (324, 58),
+-- Batch SE-EXTC-A3
+(325, 59), (326, 59), (327, 59), (328, 59),
+-- Batch SE-EXTC-A4
+(329, 60), (330, 60), (331, 60), (332, 60);
 
 -- ---------------------------------------------------------------------
 -- 5. COURSES
@@ -610,7 +649,13 @@ INSERT INTO course (course_id, course_code, course_name, dept_id) VALUES
 (23, 'CS203', 'Computer Organization and Architecture (COA)', 4),
 (24, 'CS204', 'Data Science (DSC)', 4),
 (25, 'CS205', 'Discrete Structures & Graph Theory (DSGT)', 4),
-(26, 'BS206-CS', 'Fundamentals of Mathematics (FOM)', 4);
+(26, 'BS206-CS', 'Fundamentals of Mathematics (FOM)', 4),
+-- Second Year Electronics and Telecommunication Courses
+(27, 'ET201', 'Hardware Description Language Programming (HDLP)', 3),
+(28, 'ET202', 'Signals and Systems (SNS)', 3),
+(29, 'ET203', 'Electromagnetic Waves Engineering (EWE)', 3),
+(30, 'ET204', 'Electronic Devices & Circuits (EDC)', 3),
+(31, 'BS206-ET', 'Fundamentals of Mathematics (FOM)', 3);
 
 -- ---------------------------------------------------------------------
 -- 6. LABS & ROOMS
@@ -677,7 +722,13 @@ INSERT INTO lab (lab_id, lab_name, capacity, gpu_capacity) VALUES
 (51, 'Room-408 (Classroom)', 40, 0),
 (52, 'Lab-410-A', 25, 0),
 (53, 'Lab-410-B', 25, 0),
-(54, 'Lab-509-A', 25, 0);
+(54, 'Lab-509-A', 25, 0),
+-- Second Year Electronics and Telecommunication Labs & Rooms
+(55, 'Lab-303', 25, 0),
+(56, 'Lab-205', 25, 0),
+(57, 'Lab-503', 25, 0),
+(58, 'Lab-306', 25, 0),
+(59, 'Room-202 (Classroom)', 40, 0);
 
 -- ---------------------------------------------------------------------
 -- 7. OPERATING SYSTEMS
@@ -728,7 +779,11 @@ INSERT INTO lab_os (lab_id, os_id) VALUES
 (51, 1), (51, 2),
 (52, 1), (52, 2),
 (53, 1), (53, 2),
-(54, 1), (54, 2);
+(54, 1), (54, 2),
+(55, 1), (55, 2),
+(56, 1), (56, 2),
+(57, 1), (57, 2),
+(58, 1), (58, 2);
 
 -- ---------------------------------------------------------------------
 -- 9. SOFTWARE CATALOG
@@ -787,7 +842,11 @@ INSERT INTO lab_software (lab_id, software_id) VALUES
 (51, 1), (51, 2),
 (52, 1), (52, 2),
 (53, 5), (53, 1),
-(54, 7), (54, 11);
+(54, 7), (54, 11),
+(55, 5), (55, 6),
+(56, 7), (56, 11),
+(57, 7), (57, 1),
+(58, 5), (58, 6);
 
 -- ---------------------------------------------------------------------
 -- 11. COURSE_SOFTWARE
@@ -805,7 +864,12 @@ INSERT INTO course_software (course_id, software_id) VALUES
 (21, 1), (21, 2),       -- CSE DS needs GCC, VS Code
 (22, 9), (22, 10),      -- CSE DBMS needs MySQL Server, MySQL Workbench
 (23, 5),                -- CSE COA needs Logisim Evolution
-(24, 7), (24, 11);      -- CSE DSC needs Python, Jupyter Notebook                 -- IC needs ChemDraw
+(24, 7), (24, 11),      -- CSE DSC needs Python, Jupyter Notebook
+-- EXTC Courses Software
+(27, 5), (27, 6),       -- HDLP needs Logisim, Keil
+(28, 7), (28, 11),      -- SNS needs Python, Jupyter
+(29, 7),                -- EWE needs Python
+(30, 5), (30, 6);       -- EDC needs Logisim, Keil
 
 -- ---------------------------------------------------------------------
 -- 12. WORKSTATIONS (Physical hardware terminals)
@@ -956,7 +1020,15 @@ INSERT INTO workstation (workstation_id, lab_id, station_number, status) VALUES
 -- Lab-410-B (231-236)
 (231, 53, 1, 'ACTIVE'), (232, 53, 2, 'ACTIVE'), (233, 53, 3, 'ACTIVE'), (234, 53, 4, 'ACTIVE'), (235, 53, 5, 'ACTIVE'), (236, 53, 6, 'ACTIVE'),
 -- Lab-509-A (237-242)
-(237, 54, 1, 'ACTIVE'), (238, 54, 2, 'ACTIVE'), (239, 54, 3, 'ACTIVE'), (240, 54, 4, 'ACTIVE'), (241, 54, 5, 'ACTIVE'), (242, 54, 6, 'ACTIVE');
+(237, 54, 1, 'ACTIVE'), (238, 54, 2, 'ACTIVE'), (239, 54, 3, 'ACTIVE'), (240, 54, 4, 'ACTIVE'), (241, 54, 5, 'ACTIVE'), (242, 54, 6, 'ACTIVE'),
+-- Lab-303 (243-248)
+(243, 55, 1, 'ACTIVE'), (244, 55, 2, 'ACTIVE'), (245, 55, 3, 'ACTIVE'), (246, 55, 4, 'ACTIVE'), (247, 55, 5, 'ACTIVE'), (248, 55, 6, 'ACTIVE'),
+-- Lab-205 (249-254)
+(249, 56, 1, 'ACTIVE'), (250, 56, 2, 'ACTIVE'), (251, 56, 3, 'ACTIVE'), (252, 56, 4, 'ACTIVE'), (253, 56, 5, 'ACTIVE'), (254, 56, 6, 'ACTIVE'),
+-- Lab-503 (255-260)
+(255, 57, 1, 'ACTIVE'), (256, 57, 2, 'ACTIVE'), (257, 57, 3, 'ACTIVE'), (258, 57, 4, 'ACTIVE'), (259, 57, 5, 'ACTIVE'), (260, 57, 6, 'ACTIVE'),
+-- Lab-306 (261-266)
+(261, 58, 1, 'ACTIVE'), (262, 58, 2, 'ACTIVE'), (263, 58, 3, 'ACTIVE'), (264, 58, 4, 'ACTIVE'), (265, 58, 5, 'ACTIVE'), (266, 58, 6, 'ACTIVE');
 
 -- ---------------------------------------------------------------------
 -- 13. TIME SLOTS (1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday, 5=Friday)
@@ -1536,7 +1608,31 @@ INSERT INTO schedule (schedule_id, course_id, faculty_id, lab_id, slot_id, batch
 (328, 21, 272, 53, 46, 54, 'PRACTICAL'),
 (329, 23, 265, 50, 46, 49, 'PRACTICAL'),
 -- Fri 15:15-16:15: A1 FOM Tutorial (DVP, 409)
-(330, 26, 8, 16, 48, 49, 'PRACTICAL');
+(330, 26, 8, 16, 48, 49, 'PRACTICAL'),
+
+-- =================== SE ELECTRONICS & TELECOMMUNICATION DIVISION A ===================
+-- Mon 11:15-13:15: A1 HDLP (PVK, 303), A2 SNS (MP, 205), A3 EWE (AD, 503), A4 EDC (SW, 306)
+(331, 27, 314, 55, 6, 57, 'PRACTICAL'),
+(332, 28, 25, 56, 6, 58, 'PRACTICAL'),
+(333, 29, 313, 57, 6, 59, 'PRACTICAL'),
+(334, 30, 26, 58, 6, 60, 'PRACTICAL'),
+-- Tue 11:15-13:15: A2 HDLP (PVK, 303), A3 SNS (MP, 205), A4 EWE (AD, 503), A1 EDC (SW, 306)
+(335, 27, 314, 55, 16, 58, 'PRACTICAL'),
+(336, 28, 25, 56, 16, 59, 'PRACTICAL'),
+(337, 29, 313, 57, 16, 60, 'PRACTICAL'),
+(338, 30, 26, 58, 16, 57, 'PRACTICAL'),
+-- Wed 11:15-13:15: A3 HDLP (PVK, 303), A4 SNS (NG, 205), A1 EWE (AD, 503), A2 EDC (SW, 306)
+(339, 27, 314, 55, 26, 59, 'PRACTICAL'),
+(340, 28, 315, 56, 26, 60, 'PRACTICAL'),
+(341, 29, 313, 57, 26, 57, 'PRACTICAL'),
+(342, 30, 26, 58, 26, 58, 'PRACTICAL'),
+-- Thu 11:15-13:15: A4 HDLP (PVK, 303), A1 SNS (NG, 205), A2 EWE (AD, 503), A3 EDC (SW, 306)
+(343, 27, 314, 55, 36, 60, 'PRACTICAL'),
+(344, 28, 315, 56, 36, 57, 'PRACTICAL'),
+(345, 29, 313, 57, 36, 58, 'PRACTICAL'),
+(346, 30, 26, 58, 36, 59, 'PRACTICAL'),
+-- Fri 09:00-10:00: A1 LA Tutorial (Radha S., Room 309)
+(347, 31, 13, 43, 41, 57, 'PRACTICAL');
 
 -- ---------------------------------------------------------------------
 -- 15. WORKSTATION ALLOCATION (Student seat assignments for practicals)
@@ -1621,7 +1717,12 @@ INSERT INTO workstation_allocation (schedule_id, student_id, workstation_id) VAL
 (282, 280, 207),
 (282, 281, 208),
 (282, 282, 209),
-(282, 283, 210);
+(282, 283, 210),
+-- Schedule 331: HDLP in Lab-303 (Workstations 243, 244, 245, 246) for Batch SE-EXTC-A1 (Students 317, 318, 319, 320)
+(331, 317, 243),
+(331, 318, 244),
+(331, 319, 245),
+(331, 320, 246);
 
 -- ---------------------------------------------------------------------
 -- 16. AD_HOC_REQUEST (Viva sample booking)
@@ -1648,4 +1749,4 @@ INSERT INTO notification (notification_id, user_id, message, is_read) VALUES
 -- 19. AUDIT_LOG
 -- ---------------------------------------------------------------------
 INSERT INTO audit_log (action_type, entity_name, entity_id, performed_by, details) VALUES
-('DATABASE_SEED', 'system', 1, 'SYSTEM', 'SPIT First Year (A-H), SE Computer Engineering (A-D), and SE Computer Science & Engineering (A-B) timetable database initialized.');
+('DATABASE_SEED', 'system', 1, 'SYSTEM', 'SPIT First Year (A-H), SE Computer Engineering (A-D), SE Computer Science & Engineering (A-B), and SE Electronics & Telecommunication (Division A) timetable database initialized.');
