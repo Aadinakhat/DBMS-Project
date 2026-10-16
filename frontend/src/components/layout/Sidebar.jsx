@@ -5,12 +5,8 @@ import {
     CalendarDays, 
     Cpu, 
     Clock, 
-    Code2, 
-    GraduationCap, 
     AlertCircle, 
-    Activity, 
-    Network,
-    TerminalSquare
+    Activity 
 } from 'lucide-react';
 
 const navItems = [
@@ -18,11 +14,8 @@ const navItems = [
     { to: '/schedules', label: 'Master Timetable', icon: CalendarDays },
     { to: '/labs', label: 'Labs & Workstations', icon: Cpu },
     { to: '/ad-hoc', label: 'Ad-Hoc Bookings', icon: Clock },
-    { to: '/dbms-showcase', label: 'DBMS Concepts Showcase', icon: TerminalSquare, highlight: true },
-    { to: '/student-timetable', label: 'Student Timetable View', icon: GraduationCap },
     { to: '/issues', label: 'Defect Tracker', icon: AlertCircle },
     { to: '/audit-log', label: 'Triggers & Audit Log', icon: Activity },
-    { to: '/schema', label: 'ER Diagram & Schema', icon: Network },
 ];
 
 export default function Sidebar() {
@@ -55,19 +48,12 @@ export default function Sidebar() {
                                 flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium transition-all
                                 ${isActive 
                                     ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30 font-semibold' 
-                                    : item.highlight
-                                        ? 'text-amber-300 hover:bg-slate-800/80 hover:text-amber-200 border border-amber-500/20 bg-amber-500/5'
-                                        : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
+                                    : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
                                 }
                             `}
                         >
-                            <Icon className={`w-4 h-4 shrink-0 ${item.highlight ? 'text-amber-400' : ''}`} />
+                            <Icon className="w-4 h-4 shrink-0" />
                             <span className="flex-1">{item.label}</span>
-                            {item.highlight && (
-                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">
-                                    VIVA
-                                </span>
-                            )}
                         </NavLink>
                     );
                 })}

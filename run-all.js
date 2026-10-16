@@ -7,21 +7,19 @@ console.log(' Backend: http://localhost:5000');
 console.log(' Frontend: http://localhost:3000');
 console.log('====================================================');
 
-const isWin = process.platform === 'win32';
-const npmCmd = isWin ? 'npm.cmd' : 'npm';
-const npxCmd = isWin ? 'npx.cmd' : 'npx';
-
-// 1. Start Backend Server
+// 1. Start Backend Server (direct Node.js invocation — no shell needed)
 const backend = spawn(process.execPath, [path.join(__dirname, 'backend', 'server.js')], {
     stdio: 'inherit',
     cwd: __dirname
 });
 
 // 2. Start Frontend Vite Dev Server
-const frontend = spawn(npmCmd, ['--prefix', 'frontend', 'run', 'dev', '--', '--port', '3000', '--host'], {
+//    Uses process.execPath to invoke vite's CLI entry directly, avoiding
+//    shell: true (DEP0190) and .cmd spawn issues (EINVAL) on Node v24 Windows.
+const viteBin = path.join(__dirname, 'frontend', 'node_modules', 'vite', 'bin', 'vite.js');
+const frontend = spawn(process.execPath, [viteBin, '--port', '3000', '--host'], {
     stdio: 'inherit',
-    cwd: __dirname,
-    shell: true
+    cwd: path.join(__dirname, 'frontend')
 });
 
 function shutdown() {
@@ -33,6 +31,14 @@ function shutdown() {
 
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
+
+backend.on('error', (err) => {
+    console.error(`Backend failed to start: ${err.message}`);
+});
+
+frontend.on('error', (err) => {
+    console.error(`Frontend failed to start: ${err.message}`);
+});
 
 backend.on('exit', (code) => {
     if (code !== 0 && code !== null) {

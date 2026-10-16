@@ -8,8 +8,7 @@ import {
     CheckCircle2, 
     ArrowUpRight, 
     Users,
-    HardDrive,
-    TerminalSquare
+    HardDrive
 } from 'lucide-react';
 import { 
     BarChart, 
@@ -75,13 +74,6 @@ export default function DashboardPage() {
                     </p>
                 </div>
                 <div className="flex gap-2">
-                    <Link
-                        to="/dbms-showcase"
-                        className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500 hover:bg-amber-600 text-white shadow-sm transition-colors"
-                    >
-                        <TerminalSquare className="w-3.5 h-3.5" />
-                        Run DBMS Showcase (Viva)
-                    </Link>
                     <Link
                         to="/schedules"
                         className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition-colors"
