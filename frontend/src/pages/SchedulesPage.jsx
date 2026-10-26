@@ -11,7 +11,13 @@ import {
     Building2, 
     UserCheck, 
     Coffee, 
-    UtensilsCrossed 
+    UtensilsCrossed,
+    CheckCircle2,
+    AlertCircle,
+    Loader2,
+    Sparkles,
+    ChevronDown,
+    ChevronUp
 } from 'lucide-react';
 import { api } from '../api/client';
 import { useToast } from '../context/ToastContext';
@@ -76,6 +82,86 @@ export default function SchedulesPage() {
         session_type: 'PRACTICAL'
     });
     const [submitting, setSubmitting] = useState(false);
+
+    // Live Database Availability State (Location slots queried for selected Time Slot)
+    const [availableLabs, setAvailableLabs] = useState([]);
+    const [loadingAvailableLabs, setLoadingAvailableLabs] = useState(false);
+    const [availabilityMeta, setAvailabilityMeta] = useState(null);
+    const [showOccupiedDetails, setShowOccupiedDetails] = useState(false);
+
+    // Group time slots by weekday for clean UI dropdown
+    const groupedSlots = useMemo(() => {
+        const groups = {};
+        for (const day of DAYS) {
+            groups[day.day_of_week] = {
+                dayName: day.name,
+                slots: []
+            };
+        }
+        for (const s of slots) {
+            if (groups[s.day_of_week]) {
+                groups[s.day_of_week].slots.push(s);
+            }
+        }
+        return groups;
+    }, [slots]);
+
+    // Live query to database for available locations when a time slot is selected
+    const handleSlotChange = async (slotId) => {
+        const slotVal = slotId ? String(slotId) : '';
+        setFormData(p => ({ ...p, slot_id: slotVal, lab_id: '' }));
+        setShowOccupiedDetails(false);
+
+        if (!slotVal) {
+            setAvailableLabs([]);
+            setAvailabilityMeta(null);
+            return;
+        }
+
+        try {
+            setLoadingAvailableLabs(true);
+            const res = await api.get('/labs/available', { slot_id: slotVal });
+            if (res.success) {
+                setAvailableLabs(res.data || []);
+                setAvailabilityMeta(res.meta || null);
+            }
+        } catch (err) {
+            toast.error(`Database query failed: ${err.message}`);
+            setAvailableLabs([]);
+            setAvailabilityMeta(null);
+        } finally {
+            setLoadingAvailableLabs(false);
+        }
+    };
+
+    // Open Add Session modal with optional pre-selected slot
+    const handleOpenAddModal = (presetSlotId = null) => {
+        const slotIdToUse = presetSlotId ? String(presetSlotId) : '';
+        setFormData({
+            course_id: '',
+            faculty_id: '',
+            lab_id: '',
+            slot_id: slotIdToUse,
+            batch_id: '',
+            session_type: 'PRACTICAL'
+        });
+        setShowOccupiedDetails(false);
+        setIsAddOpen(true);
+
+        if (slotIdToUse) {
+            handleSlotChange(slotIdToUse);
+        } else {
+            setAvailableLabs([]);
+            setAvailabilityMeta(null);
+        }
+    };
+
+    const handleCloseAddModal = () => {
+        setIsAddOpen(false);
+        setAvailableLabs([]);
+        setAvailabilityMeta(null);
+        setShowOccupiedDetails(false);
+    };
 
     // Delete confirmation
     const [deleteId, setDeleteId] = useState(null);
@@ -170,7 +256,7 @@ export default function SchedulesPage() {
             const res = await api.post('/schedules', formData);
             if (res.success) {
                 toast.success('Session scheduled successfully. Constraint checks passed and audit log updated.');
-                setIsAddOpen(false);
+                handleCloseAddModal();
                 setFormData({
                     course_id: '',
                     faculty_id: '',
@@ -310,7 +396,7 @@ export default function SchedulesPage() {
                 </div>
                 <div className="flex items-center gap-3">
                     <button
-                        onClick={() => setIsAddOpen(true)}
+                        onClick={() => handleOpenAddModal()}
                         className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition-colors self-start md:self-auto"
                     >
                         <Plus className="w-4 h-4" />
@@ -473,7 +559,7 @@ export default function SchedulesPage() {
                             </button>
                         ) : (
                             <button
-                                onClick={() => setIsAddOpen(true)}
+                                onClick={() => handleOpenAddModal()}
                                 className="px-3.5 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-medium"
                             >
                                 Add First Session
@@ -556,6 +642,9 @@ export default function SchedulesPage() {
                                                 const hasStarting = cellData.starting.length > 0;
                                                 const hasContinuing = cellData.continuing.length > 0;
                                                 const isEmpty = !hasStarting && !hasContinuing;
+                                                const cellSlot = slots.find(
+                                                    s => s.day_of_week === day.day_of_week && s.start_time === period.startTime
+                                                );
 
                                                 return (
                                                     <td
@@ -563,8 +652,20 @@ export default function SchedulesPage() {
                                                         className="py-2 px-2.5 border-r border-slate-200 last:border-r-0 align-top bg-white"
                                                     >
                                                         {isEmpty ? (
-                                                            <div className="h-full min-h-[60px] flex items-center justify-center text-[11px] text-slate-300">
-                                                                <span className="select-none">—</span>
+                                                            <div 
+                                                                onClick={() => cellSlot && handleOpenAddModal(cellSlot.slot_id)}
+                                                                className={`h-full min-h-[64px] p-2 flex flex-col items-center justify-center rounded-lg transition-all border border-transparent ${
+                                                                    cellSlot ? 'cursor-pointer hover:bg-blue-50/60 hover:border-dashed hover:border-blue-300 group' : 'text-slate-300'
+                                                                }`}
+                                                                title={cellSlot ? `Click to schedule session for ${day.name} ${period.display}` : undefined}
+                                                            >
+                                                                <span className={cellSlot ? 'group-hover:hidden select-none text-[11px] text-slate-300' : 'select-none text-[11px] text-slate-300'}>—</span>
+                                                                {cellSlot && (
+                                                                    <span className="hidden group-hover:inline-flex items-center gap-1 text-[10px] font-semibold text-blue-600">
+                                                                        <Plus className="w-3.5 h-3.5" />
+                                                                        <span>Add Session</span>
+                                                                    </span>
+                                                                )}
                                                             </div>
                                                         ) : (
                                                             <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
@@ -663,6 +764,19 @@ export default function SchedulesPage() {
                                                                         </span>
                                                                     </div>
                                                                 ))}
+
+                                                                {/* Quick add session button in cell footer */}
+                                                                {cellSlot && (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleOpenAddModal(cellSlot.slot_id)}
+                                                                        className="w-full py-1 px-1.5 rounded border border-dashed border-slate-200 hover:border-blue-400 hover:bg-blue-50 text-[10px] text-slate-400 hover:text-blue-600 font-medium flex items-center justify-center gap-1 transition-colors"
+                                                                        title={`Schedule another session on ${day.name} at ${period.display}`}
+                                                                    >
+                                                                        <Plus className="w-3 h-3" />
+                                                                        <span>Add Session</span>
+                                                                    </button>
+                                                                )}
                                                             </div>
                                                         )}
                                                     </td>
@@ -677,124 +791,262 @@ export default function SchedulesPage() {
                 </div>
             )}
 
-            {/* Create Schedule Modal (Unchanged backend contract) */}
+            {/* Create Schedule Modal (Dynamic DB-driven location slot filtering) */}
             <Modal
                 isOpen={isAddOpen}
-                onClose={() => setIsAddOpen(false)}
+                onClose={handleCloseAddModal}
                 title="Schedule New Master Laboratory Session"
-                maxWidth="max-w-md"
+                maxWidth="max-w-lg"
             >
                 <form onSubmit={handleCreate} className="space-y-4 text-xs">
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-800 text-[11px]">
-                        <strong>Database Invariant Note:</strong> The database enforces <code>UNIQUE(lab_id, slot_id)</code> and <code>UNIQUE(faculty_id, slot_id)</code>. If a conflict occurs, MySQL will return a structured constraint violation.
+                    {/* Database Invariant Context Card */}
+                    <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-lg text-blue-900 text-[11px] space-y-1">
+                        <div className="flex items-center gap-1.5 font-semibold text-blue-950">
+                            <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                            <span>Database Invariant & Dynamic Availability Protection</span>
+                        </div>
+                        <p className="text-blue-800 leading-relaxed">
+                            Selecting a time slot queries MySQL live. <strong>Only verified, unoccupied location slots (laboratories)</strong> are visible in the location selector to guarantee conflict-free scheduling without collision.
+                        </p>
                     </div>
 
-                    <div>
-                        <label className="block font-medium text-slate-700 mb-1">Course</label>
-                        <select
-                            required
-                            value={formData.course_id}
-                            onChange={(e) => setFormData(p => ({ ...p, course_id: e.target.value }))}
-                            className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                        >
-                            <option value="">Select course...</option>
-                            {courses.map(c => (
-                                <option key={c.course_id} value={c.course_id}>
-                                    {c.course_code} - {c.course_name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block font-medium text-slate-700 mb-1">Faculty In-Charge</label>
-                        <select
-                            required
-                            value={formData.faculty_id}
-                            onChange={(e) => setFormData(p => ({ ...p, faculty_id: e.target.value }))}
-                            className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                        >
-                            <option value="">Select professor...</option>
-                            {facultyList.map(f => (
-                                <option key={f.user_id} value={f.user_id}>{f.name} ({f.email})</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block font-medium text-slate-700 mb-1">Laboratory</label>
-                        <select
-                            required
-                            value={formData.lab_id}
-                            onChange={(e) => setFormData(p => ({ ...p, lab_id: e.target.value }))}
-                            className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                        >
-                            <option value="">Select laboratory...</option>
-                            {labs.map(l => (
-                                <option key={l.lab_id} value={l.lab_id}>
-                                    {l.lab_name} (Cap: {l.capacity})
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block font-medium text-slate-700 mb-1">Time Slot</label>
+                    {/* Step 1: Time Slot Selection (Must be selected first) */}
+                    <div className="space-y-1.5">
+                        <label className="block font-semibold text-slate-800 flex items-center justify-between">
+                            <span className="flex items-center gap-1.5">
+                                <Clock className="w-3.5 h-3.5 text-blue-600" />
+                                <span>1. Weekly Time Slot</span>
+                                <span className="text-rose-500">*</span>
+                            </span>
+                            {formData.slot_id && availabilityMeta?.slot && (
+                                <span className="text-[10px] font-mono text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded font-medium border border-blue-200">
+                                    {availabilityMeta.slot.day_name} ({availabilityMeta.slot.start_time?.substring(0, 5)} - {availabilityMeta.slot.end_time?.substring(0, 5)})
+                                </span>
+                            )}
+                        </label>
                         <select
                             required
                             value={formData.slot_id}
-                            onChange={(e) => setFormData(p => ({ ...p, slot_id: e.target.value }))}
-                            className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                            onChange={(e) => handleSlotChange(e.target.value)}
+                            className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 font-medium text-slate-800 text-xs"
                         >
-                            <option value="">Select weekly slot...</option>
-                            {slots.map(s => (
-                                <option key={s.slot_id} value={s.slot_id}>
-                                    {s.day_name}: {s.start_time.substring(0, 5)} - {s.end_time.substring(0, 5)}
-                                </option>
+                            <option value="">Select weekly time slot first...</option>
+                            {Object.entries(groupedSlots).map(([dayOfWeek, group]) => (
+                                <optgroup key={dayOfWeek} label={`📅 ${group.dayName}`}>
+                                    {group.slots.map(s => {
+                                        const startH = parseInt(s.start_time.split(':')[0], 10);
+                                        const endH = parseInt(s.end_time.split(':')[0], 10);
+                                        const durationH = endH - startH;
+                                        return (
+                                            <option key={s.slot_id} value={s.slot_id}>
+                                                {group.dayName}: {s.start_time.substring(0, 5)} - {s.end_time.substring(0, 5)} {durationH >= 2 ? '(2h Practical Session)' : '(1h Single Period)'}
+                                            </option>
+                                        );
+                                    })}
+                                </optgroup>
                             ))}
                         </select>
                     </div>
 
-                    <div>
-                        <label className="block font-medium text-slate-700 mb-1">Student Batch</label>
-                        <select
-                            required
-                            value={formData.batch_id}
-                            onChange={(e) => setFormData(p => ({ ...p, batch_id: e.target.value }))}
-                            className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                        >
-                            <option value="">Select batch...</option>
-                            {batches.map(b => (
-                                <option key={b.batch_id} value={b.batch_id}>{b.batch_name}</option>
-                            ))}
-                        </select>
+                    {/* Step 2: Available Location Slot (Laboratory) Selection */}
+                    <div className="space-y-1.5">
+                        <label className="block font-semibold text-slate-800 flex items-center justify-between">
+                            <span className="flex items-center gap-1.5">
+                                <Building2 className="w-3.5 h-3.5 text-blue-600" />
+                                <span>2. Available Location Slot (Laboratory)</span>
+                                <span className="text-rose-500">*</span>
+                            </span>
+                            {formData.slot_id && !loadingAvailableLabs && availabilityMeta && (
+                                <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                                    {availableLabs.length} available
+                                </span>
+                            )}
+                        </label>
+
+                        {/* Location Select Box */}
+                        {loadingAvailableLabs ? (
+                            <div className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center gap-2 text-slate-500 text-xs">
+                                <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+                                <span>Checking database for available locations...</span>
+                            </div>
+                        ) : (
+                            <select
+                                required
+                                disabled={!formData.slot_id || availableLabs.length === 0}
+                                value={formData.lab_id}
+                                onChange={(e) => setFormData(p => ({ ...p, lab_id: e.target.value }))}
+                                className={`w-full p-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-xs ${
+                                    !formData.slot_id 
+                                        ? 'bg-slate-100/70 border-slate-200 text-slate-400 cursor-not-allowed' 
+                                        : 'bg-slate-50 border-slate-200 font-medium text-slate-800'
+                                }`}
+                            >
+                                {!formData.slot_id ? (
+                                    <option value="">⚠️ Select a time slot above first to view available locations...</option>
+                                ) : availableLabs.length === 0 ? (
+                                    <option value="">No locations available for this time slot</option>
+                                ) : (
+                                    <>
+                                        <option value="">Select available location ({availableLabs.length} available in DB)...</option>
+                                        {availableLabs.map(l => (
+                                            <option key={l.lab_id} value={l.lab_id}>
+                                                {l.lab_name} — Capacity: {l.capacity} {l.gpu_capacity > 0 ? `(GPU: ${l.gpu_capacity})` : ''} {l.active_workstations ? `• ${l.active_workstations} active terminals` : ''}
+                                            </option>
+                                        ))}
+                                    </>
+                                )}
+                            </select>
+                        )}
+
+                        {/* Live Availability Info Banner & Collision Transparency */}
+                        {!formData.slot_id ? (
+                            <p className="text-[11px] text-slate-400 flex items-center gap-1 mt-1">
+                                <AlertCircle className="w-3 h-3 text-slate-400 shrink-0" />
+                                <span>Please pick a weekly time slot above to load available rooms from the database.</span>
+                            </p>
+                        ) : availabilityMeta && (
+                            <div className="p-2.5 rounded-lg border bg-slate-50/80 border-slate-200 text-[11px] space-y-1.5 mt-1">
+                                <div className="flex items-center justify-between text-slate-700">
+                                    <div className="flex items-center gap-1.5 font-semibold text-emerald-700">
+                                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                        <span>Showing {availabilityMeta.availableCount} of {availabilityMeta.totalCount} locations</span>
+                                    </div>
+                                    {availabilityMeta.occupiedCount > 0 && (
+                                        <span className="font-mono text-[10px] text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
+                                            {availabilityMeta.occupiedCount} occupied hidden
+                                        </span>
+                                    )}
+                                </div>
+
+                                {availabilityMeta.occupiedCount > 0 && (
+                                    <div className="pt-1 border-t border-slate-200">
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowOccupiedDetails(!showOccupiedDetails)}
+                                            className="text-[10px] font-semibold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1 focus:outline-none"
+                                        >
+                                            {showOccupiedDetails ? (
+                                                <>
+                                                    <ChevronUp className="w-3 h-3" />
+                                                    <span>Hide occupied room details</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <ChevronDown className="w-3 h-3" />
+                                                    <span>View {availabilityMeta.occupiedCount} booked rooms filtered out by database</span>
+                                                </>
+                                            )}
+                                        </button>
+
+                                        {showOccupiedDetails && (
+                                            <div className="mt-1.5 divide-y divide-slate-100 bg-white rounded-md border border-slate-200 max-h-32 overflow-y-auto p-1.5 text-[10px]">
+                                                {availabilityMeta.occupiedLabs?.map((occ, idx) => (
+                                                    <div key={idx} className="py-1 px-1 flex items-center justify-between text-slate-700">
+                                                        <div className="font-semibold truncate pr-2">{occ.lab_name}</div>
+                                                        <div className="text-slate-500 font-mono shrink-0">
+                                                            {occ.course_code} ({occ.batch_name}) &bull; {occ.start_time?.substring(0, 5)}-{occ.end_time?.substring(0, 5)}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
-                    <div>
-                        <label className="block font-medium text-slate-700 mb-1">Session Type</label>
-                        <select
-                            value={formData.session_type}
-                            onChange={(e) => setFormData(p => ({ ...p, session_type: e.target.value }))}
-                            className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                        >
-                            <option value="PRACTICAL">PRACTICAL</option>
-                            <option value="EXAM">EXAM</option>
-                            <option value="MAKEUP">MAKEUP</option>
-                        </select>
+                    {/* Step 3: Course & Session Type */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 border-t border-slate-100">
+                        <div>
+                            <label className="block font-medium text-slate-700 mb-1">
+                                Course <span className="text-rose-500">*</span>
+                            </label>
+                            <select
+                                required
+                                value={formData.course_id}
+                                onChange={(e) => setFormData(p => ({ ...p, course_id: e.target.value }))}
+                                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-xs"
+                            >
+                                <option value="">Select course...</option>
+                                {courses.map(c => (
+                                    <option key={c.course_id} value={c.course_id}>
+                                        {c.course_code} - {c.course_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block font-medium text-slate-700 mb-1">
+                                Session Type
+                            </label>
+                            <select
+                                value={formData.session_type}
+                                onChange={(e) => setFormData(p => ({ ...p, session_type: e.target.value }))}
+                                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-xs font-semibold text-slate-700"
+                            >
+                                <option value="PRACTICAL">PRACTICAL (Lab)</option>
+                                <option value="EXAM">EXAM (Evaluation)</option>
+                                <option value="MAKEUP">MAKEUP (Tutorial)</option>
+                            </select>
+                        </div>
                     </div>
 
+                    {/* Step 4: Batch & Faculty */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label className="block font-medium text-slate-700 mb-1">
+                                Student Batch <span className="text-rose-500">*</span>
+                            </label>
+                            <select
+                                required
+                                value={formData.batch_id}
+                                onChange={(e) => setFormData(p => ({ ...p, batch_id: e.target.value }))}
+                                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-xs font-mono"
+                            >
+                                <option value="">Select batch...</option>
+                                {batches.map(b => (
+                                    <option key={b.batch_id} value={b.batch_id}>{b.batch_name}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block font-medium text-slate-700 mb-1">
+                                Faculty In-Charge <span className="text-rose-500">*</span>
+                            </label>
+                            <select
+                                required
+                                value={formData.faculty_id}
+                                onChange={(e) => setFormData(p => ({ ...p, faculty_id: e.target.value }))}
+                                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-xs"
+                            >
+                                <option value="">Select professor...</option>
+                                {facultyList.map(f => (
+                                    <option key={f.user_id} value={f.user_id}>{f.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Modal Actions */}
                     <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
                         <button
                             type="button"
-                            onClick={() => setIsAddOpen(false)}
-                            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg"
+                            onClick={handleCloseAddModal}
+                            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs transition-colors"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            disabled={submitting}
-                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-sm"
+                            disabled={submitting || loadingAvailableLabs || !formData.slot_id || !formData.lab_id}
+                            className={`px-4 py-2 text-white font-semibold rounded-lg shadow-sm text-xs transition-all ${
+                                submitting || loadingAvailableLabs || !formData.slot_id || !formData.lab_id
+                                    ? 'bg-blue-400 cursor-not-allowed'
+                                    : 'bg-blue-600 hover:bg-blue-700'
+                            }`}
                         >
                             {submitting ? 'Creating...' : 'Create Session'}
                         </button>

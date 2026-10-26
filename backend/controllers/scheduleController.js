@@ -138,20 +138,50 @@ exports.getScheduleById = async (req, res, next) => {
 };
 
 exports.createSchedule = async (req, res, next) => {
+    const conn = await db.getConnection();
     try {
+        await conn.beginTransaction();
+
         const { course_id, faculty_id, lab_id, slot_id, batch_id, session_type = 'PRACTICAL' } = req.body;
 
         if (!course_id || !faculty_id || !lab_id || !slot_id || !batch_id) {
+            await conn.rollback();
             return res.status(400).json({
                 success: false,
                 message: 'All scheduling parameters (course, faculty, lab, slot, batch) are required'
             });
         }
 
-        const [result] = await db.query(`
+        // Insert first to let MySQL validate foreign keys and exact unique invariants (uq_lab_slot, uq_faculty_slot, uq_batch_slot)
+        const [result] = await conn.query(`
             INSERT INTO schedule (course_id, faculty_id, lab_id, slot_id, batch_id, session_type)
             VALUES (?, ?, ?, ?, ?, ?)
         `, [course_id, faculty_id, lab_id, slot_id, batch_id, session_type]);
+
+        // Check for overlapping period conflict with any other session (e.g. 1h vs 2h slot collision)
+        const [overlappingConflicts] = await conn.query(`
+            SELECT s.schedule_id, c.course_code, l.lab_name, ts_existing.start_time, ts_existing.end_time
+            FROM schedule s
+            JOIN lab l ON l.lab_id = s.lab_id
+            JOIN course c ON c.course_id = s.course_id
+            JOIN time_slot ts_existing ON ts_existing.slot_id = s.slot_id
+            JOIN time_slot ts_target ON ts_target.slot_id = ?
+            WHERE s.lab_id = ?
+              AND s.schedule_id != ?
+              AND ts_existing.day_of_week = ts_target.day_of_week
+              AND ts_existing.start_time < ts_target.end_time
+              AND ts_existing.end_time > ts_target.start_time
+        `, [slot_id, lab_id, result.insertId]);
+
+        if (overlappingConflicts.length > 0) {
+            await conn.rollback();
+            return res.status(409).json({
+                success: false,
+                message: 'Database Conflict: Lab is already booked for this specific time slot.'
+            });
+        }
+
+        await conn.commit();
 
         res.status(201).json({
             success: true,
@@ -159,7 +189,10 @@ exports.createSchedule = async (req, res, next) => {
             message: 'Master schedule entry created successfully (Audit trigger executed)'
         });
     } catch (err) {
+        await conn.rollback();
         next(err);
+    } finally {
+        conn.release();
     }
 };
 

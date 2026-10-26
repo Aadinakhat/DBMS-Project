@@ -1,8 +1,127 @@
 const db = require('../db');
 
+exports.getAvailableLabs = async (req, res, next) => {
+    try {
+        const { slot_id } = req.query;
+
+        if (!slot_id) {
+            return res.status(400).json({
+                success: false,
+                message: 'slot_id query parameter is required to check available locations'
+            });
+        }
+
+        // 1. Fetch target time slot details from database
+        const [[targetSlot]] = await db.query(`
+            SELECT 
+                slot_id, 
+                day_of_week, 
+                CASE day_of_week
+                    WHEN 1 THEN 'Monday' WHEN 2 THEN 'Tuesday' WHEN 3 THEN 'Wednesday'
+                    WHEN 4 THEN 'Thursday' WHEN 5 THEN 'Friday' WHEN 6 THEN 'Saturday' WHEN 7 THEN 'Sunday'
+                END AS day_name,
+                start_time, 
+                end_time
+            FROM time_slot 
+            WHERE slot_id = ?
+        `, [slot_id]);
+
+        if (!targetSlot) {
+            return res.status(404).json({
+                success: false,
+                message: 'Target time slot not found'
+            });
+        }
+
+        // 2. Query available labs using Stored Procedure sp_get_available_labs (with resilient SQL fallback)
+        let availableLabs = [];
+        try {
+            const [spResult] = await db.query('CALL sp_get_available_labs(?)', [slot_id]);
+            availableLabs = spResult[0] || [];
+        } catch (spErr) {
+            // Fallback direct SQL query
+            const [queryResult] = await db.query(`
+                SELECT 
+                    l.lab_id,
+                    l.lab_name,
+                    l.capacity,
+                    l.gpu_capacity,
+                    COUNT(DISTINCT w.workstation_id) AS total_workstations,
+                    SUM(CASE WHEN w.status = 'ACTIVE' THEN 1 ELSE 0 END) AS active_workstations,
+                    (
+                        SELECT GROUP_CONCAT(sw.software_name ORDER BY sw.software_name SEPARATOR ', ')
+                        FROM lab_software ls
+                        JOIN software sw ON sw.software_id = ls.software_id
+                        WHERE ls.lab_id = l.lab_id
+                    ) AS installed_software,
+                    (
+                        SELECT GROUP_CONCAT(os.os_name ORDER BY os.os_name SEPARATOR ', ')
+                        FROM lab_os lo
+                        JOIN operating_system os ON os.os_id = lo.os_id
+                        WHERE lo.lab_id = l.lab_id
+                    ) AS installed_os
+                FROM lab l
+                LEFT JOIN workstation w ON w.lab_id = l.lab_id
+                WHERE l.lab_id NOT IN (
+                    SELECT DISTINCT s.lab_id
+                    FROM schedule s
+                    JOIN time_slot ts ON ts.slot_id = s.slot_id
+                    WHERE ts.day_of_week = ?
+                      AND ts.start_time < ?
+                      AND ts.end_time > ?
+                )
+                GROUP BY l.lab_id, l.lab_name, l.capacity, l.gpu_capacity
+                ORDER BY l.lab_name ASC
+            `, [targetSlot.day_of_week, targetSlot.end_time, targetSlot.start_time]);
+            availableLabs = queryResult;
+        }
+
+        // 3. Query occupied labs for rich diagnostic metadata
+        const [occupiedLabs] = await db.query(`
+            SELECT 
+                l.lab_id,
+                l.lab_name,
+                c.course_code,
+                c.course_name,
+                b.batch_name,
+                f.name AS faculty_name,
+                ts.start_time,
+                ts.end_time,
+                s.session_type
+            FROM schedule s
+            JOIN lab l ON l.lab_id = s.lab_id
+            JOIN course c ON c.course_id = s.course_id
+            JOIN batch b ON b.batch_id = s.batch_id
+            JOIN app_user f ON f.user_id = s.faculty_id
+            JOIN time_slot ts ON ts.slot_id = s.slot_id
+            WHERE ts.day_of_week = ?
+              AND ts.start_time < ?
+              AND ts.end_time > ?
+            ORDER BY l.lab_name ASC
+        `, [targetSlot.day_of_week, targetSlot.end_time, targetSlot.start_time]);
+
+        const [[{ total_labs }]] = await db.query('SELECT COUNT(*) AS total_labs FROM lab');
+
+        res.json({
+            success: true,
+            data: availableLabs,
+            meta: {
+                slot: targetSlot,
+                availableCount: availableLabs.length,
+                occupiedCount: occupiedLabs.length,
+                totalCount: total_labs,
+                occupiedLabs
+            },
+            message: `Retrieved ${availableLabs.length} available locations for ${targetSlot.day_name} (${targetSlot.start_time.substring(0, 5)} - ${targetSlot.end_time.substring(0, 5)}) via Stored Procedure sp_get_available_labs`
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 exports.listLabs = async (req, res, next) => {
     try {
-        const { search } = req.query;
+        const { search, slot_id } = req.query;
         let sql = `
             SELECT 
                 l.lab_id,
@@ -33,6 +152,19 @@ exports.listLabs = async (req, res, next) => {
         if (search) {
             sql += ' AND l.lab_name LIKE ?';
             params.push(`%${search}%`);
+        }
+
+        if (slot_id) {
+            sql += ` AND l.lab_id NOT IN (
+                SELECT DISTINCT s.lab_id
+                FROM schedule s
+                JOIN time_slot ts_existing ON ts_existing.slot_id = s.slot_id
+                JOIN time_slot ts_target ON ts_target.slot_id = ?
+                WHERE ts_existing.day_of_week = ts_target.day_of_week
+                  AND ts_existing.start_time < ts_target.end_time
+                  AND ts_existing.end_time > ts_target.start_time
+            )`;
+            params.push(parseInt(slot_id, 10));
         }
 
         sql += ' GROUP BY l.lab_id, l.lab_name, l.capacity, l.gpu_capacity ORDER BY l.lab_id';

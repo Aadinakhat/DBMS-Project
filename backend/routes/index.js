@@ -46,6 +46,7 @@ router.delete('/schedules/:id', scheduleController.deleteSchedule);
 router.post('/schedules/:id/allocate-seats', scheduleController.allocateSeats);
 
 // 4. Labs
+router.get('/labs/available', labController.getAvailableLabs);
 router.get('/labs', labController.listLabs);
 router.get('/labs/:id', labController.getLabById);
 router.post('/labs', labController.createLab);

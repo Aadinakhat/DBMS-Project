@@ -47,6 +47,18 @@ async function runTests() {
         if (!json.success || json.data.length === 0) throw new Error('No labs returned');
     });
 
+    // 4b. Live available labs for slot
+    await test('Query available labs for time slot (Database live availability)', async () => {
+        const res = await fetch(`${baseUrl}/labs/available?slot_id=1`);
+        const json = await res.json();
+        if (!json.success || !Array.isArray(json.data) || json.data.length === 0) {
+            throw new Error('Failed to retrieve available labs');
+        }
+        if (!json.meta || json.meta.occupiedCount === undefined) {
+            throw new Error('Missing availability metadata');
+        }
+    });
+
     // 5. Predefined Showcase Queries List
     await test('Get Showcase DBMS Queries', async () => {
         const res = await fetch(`${baseUrl}/dbms/queries`);
@@ -67,16 +79,16 @@ async function runTests() {
 
     // 7. Duplicate Key Constraint Check (Prevent Double-Booking)
     await test('Unique Constraint: Reject double-booking (uq_lab_slot)', async () => {
-        // Schedule 1 exists on lab 4, slot 1
+        // Schedule 1 exists on lab 12, slot 1
         const res = await fetch(`${baseUrl}/schedules`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 course_id: 2,
                 faculty_id: 4,
-                lab_id: 4, // Lab 4
-                slot_id: 1, // Slot 1 already taken by Schedule 1!
-                batch_id: 3,
+                lab_id: 12, // Lab 12 is already booked on Slot 1 by Schedule 1!
+                slot_id: 1,
+                batch_id: 4, // Batch 4 (not booked on slot 1)
                 session_type: 'PRACTICAL'
             })
         });
@@ -111,7 +123,7 @@ async function runTests() {
 
     // 9. Stored Procedure: Seat allocation
     await test('Stored Procedure: sp_allocate_student_seats', async () => {
-        const res = await fetch(`${baseUrl}/schedules/1/allocate-seats`, {
+        const res = await fetch(`${baseUrl}/schedules/3/allocate-seats`, {
             method: 'POST'
         });
         const json = await res.json();

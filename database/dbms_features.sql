@@ -430,6 +430,62 @@ BEGIN
 END //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS sp_get_available_labs;
+DELIMITER //
+CREATE PROCEDURE sp_get_available_labs(
+    IN p_slot_id INT
+)
+BEGIN
+    DECLARE v_day_of_week INT;
+    DECLARE v_start_time TIME;
+    DECLARE v_end_time TIME;
+
+    -- Fetch target time slot details
+    SELECT day_of_week, start_time, end_time
+    INTO v_day_of_week, v_start_time, v_end_time
+    FROM time_slot
+    WHERE slot_id = p_slot_id;
+
+    IF v_day_of_week IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: Time slot not found';
+    END IF;
+
+    -- Return only available laboratories that have no overlapping sessions
+    SELECT 
+        l.lab_id,
+        l.lab_name,
+        l.capacity,
+        l.gpu_capacity,
+        COUNT(DISTINCT w.workstation_id) AS total_workstations,
+        SUM(CASE WHEN w.status = 'ACTIVE' THEN 1 ELSE 0 END) AS active_workstations,
+        (
+            SELECT GROUP_CONCAT(sw.software_name ORDER BY sw.software_name SEPARATOR ', ')
+            FROM lab_software ls
+            JOIN software sw ON sw.software_id = ls.software_id
+            WHERE ls.lab_id = l.lab_id
+        ) AS installed_software,
+        (
+            SELECT GROUP_CONCAT(os.os_name ORDER BY os.os_name SEPARATOR ', ')
+            FROM lab_os lo
+            JOIN operating_system os ON os.os_id = lo.os_id
+            WHERE lo.lab_id = l.lab_id
+        ) AS installed_os
+    FROM lab l
+    LEFT JOIN workstation w ON w.lab_id = l.lab_id
+    WHERE l.lab_id NOT IN (
+        SELECT DISTINCT s.lab_id
+        FROM schedule s
+        JOIN time_slot ts ON ts.slot_id = s.slot_id
+        WHERE ts.day_of_week = v_day_of_week
+          AND ts.start_time < v_end_time
+          AND ts.end_time > v_start_time
+    )
+    GROUP BY l.lab_id, l.lab_name, l.capacity, l.gpu_capacity
+    ORDER BY l.lab_name ASC;
+END //
+DELIMITER ;
+
 
 -- ---------------------------------------------------------------------
 -- 4. TRIGGERS
